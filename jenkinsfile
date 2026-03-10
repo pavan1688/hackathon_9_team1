@@ -13,11 +13,9 @@ pipeline {
      stages {
         stage ('Build') {
 	    steps {
+	        echo " Checkout repository and Build"
 	        git checkout "github url"
 		sh 'mvn clean install'
-		sh 'mvn test'
-		sh 'mvn clean compile'
-		sh 'mvn package'
 		}
 	
 	}
@@ -25,6 +23,7 @@ pipeline {
 
 	stage ('Unit Tests') {
 	    steps {
+	       echo "Run unit test cases"
 	       sh 'mvn test'
 	    }
 
@@ -33,24 +32,52 @@ pipeline {
 
 	stage ('SonarQube') {
 	   steps {
+	   echo "Run static code analysis"
 	      sh ''
 	   }
         }
+         
+	stage ('Vulnerability Scan') {
+	   steps {
+	   echo 'Run vulnerabilities scan'
+	      sh 'Black dog'
 
+	   }
+	}
 
 	stage ('Dockerise') {
 	   steps {
+	   echo "containering application"
 	      sh 'docker build .'
            }
 	}
 
+        stage ('Publish') {
+	   steps {
+	   echo "publishing docker image"
+	      sh " docker tag "
+	      sh " docker push url"
+	   }
+
+	}
+
+
 
 	stage ('Deploy') {
 	   steps {
+	   echo "Deploy application to cluster"
 	      sh 'kubectl apply -f "deployment.yaml"'
 	   }
 
 	}
+
+	stage ('Integration Test') {
+	  steps {
+	  echo "Run Integration Test"
+	     sh ''
+	  }
+
+        }
 
 
      }
