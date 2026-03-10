@@ -30,4 +30,5 @@ requirments.txt
 *Install the requirements provide in the requirements.txt*
 ```pip install -r requirements.txt```
 *execution of the test script*
-```python -m pytest --html=report.html```
+* for test execution based on smoke, regression, e2e *
+```python -m e2e pytest --html=report.html```
