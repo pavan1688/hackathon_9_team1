@@ -1,0 +1,58 @@
+pipeline {
+     agent Node1
+
+
+
+     tools {
+        jdk 'jdk 17'
+	maven 'maven3'
+     }
+
+
+
+     stages {
+        stage ('Build') {
+	    steps {
+	        git checkout "github url"
+		sh 'mvn clean install'
+		sh 'mvn test'
+		sh 'mvn clean compile'
+		sh 'mvn package'
+		}
+	
+	}
+
+
+	stage ('Unit Tests') {
+	    steps {
+	       sh 'mvn test'
+	    }
+
+	}
+
+
+	stage ('SonarQube') {
+	   steps {
+	      sh ''
+	   }
+        }
+
+
+	stage ('Dockerise') {
+	   steps {
+	      sh 'docker build .'
+           }
+	}
+
+
+	stage ('Deploy') {
+	   steps {
+	      sh 'kubectl apply -f "deployment.yaml"'
+	   }
+
+	}
+
+
+     }
+  
+}
