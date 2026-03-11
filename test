@@ -1,1 +1,15 @@
-test
+pipeline{
+	agent any
+
+	stages{
+		stage('Checkout Bitbucket'){
+			step{
+				script{
+					bat'''
+							
+					'''
+				}
+			}
+		}
+	}
+} 
